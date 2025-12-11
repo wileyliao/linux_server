@@ -1,0 +1,63 @@
+# 製作Linux開機USB 到 安裝系統完畢
+## Build Linux Bootable USB
+- 下載 Linux CLI ISO（建議 Ubuntu Server 大小約3G左右)
+  - Ubuntu Server LTS --> `https://ubuntu.com/download/server`
+- 使用 Rufus 製作可開機 USB (8GB以上)
+  - 分割配置: GPT
+  - 目標系統: UEFI-only
+  - 檔案系統: FAT32
+  - 配置單元大小: 8192(default)
+ 
+## 安裝步驟
+- Try or install ubuntu server
+- Select your keyboard
+  - Select English(US)
+- Choose the base for the installation
+  - Ubuntu Server(完整版) --> 建議
+    - 功能比較完整
+    - 預設工具比較齊全
+  - Ubuntu Server (minimized) --> 進階
+    - 超級精簡、安裝乾淨
+    - 適合資深使用者or雲端
+- Proxy address
+  - 公司網路被防火牆管得很嚴，需要透過 proxy 才能連外
+  - 網路管理員有明確給`http://192.168.x.x:3128`之類的
+- The mirror location passed test
+  - Ubuntu 安裝程式成功連上官方套件鏡像站
+- Storage / Disk Partition
+  - Use an entire disk & set up LVM（打勾）
+    - 自動幫你做好分割，不用自己手動調
+    - 使用 LVM（邏輯分割）未來可以動態擴容更彈性
+  - Encrypt the LVM group with LUKS（可選）--> 建議不勾
+    - 開機都要求你輸入密碼才能啟動系統
+  - Extra
+    - 確定選對要安裝的Disk
+- Filesystem summary
+  - ubuntu根據上一動所做出來的切割結果
+  - 最終確認後即將開始
+- System information
+  - your name
+    - 給安裝程式用的顯示名稱，沒有太大影響
+  - your servers name
+    - 主機名稱 / hostname
+      - 影響 SSH 顯示
+      - 影響`/etc/hostname`
+      - server 最好用簡短、無空格、全英文
+  - pick a username
+    - 之後 SSH 連入 Linux 的帳號
+    - example `ssh username@192.168.xx.xx`
+  - password
+- Update to ubuntu pro?
+  - Skip / Continue without Ubuntu Pro
+    - Ubuntu Pro 是公司用的 付費/訂閱版服務
+    - 給企業長期安全維護（ESM）、FIPS、合規需求用
+    - 開了，有些套件設定會變複雜
+- ssh configuration
+  - Install OpenSSH Server 勾選
+  - Allow password authentication over SSH 強制勾選
+  - Import SSH key
+    - 之後再手動加入
+- Feature server snaps
+  - 全部都不要勾選（全部留空），直接按 Done / Continue
+    - 保持最乾淨的 server 初始環境
+    - 未來用到什麼就手動安裝什麼
